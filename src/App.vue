@@ -1,16 +1,14 @@
 <template>
-  <div id="app">
+  <div id="app" class="container">
     <notifica v-if="errore" @chiudiNotifica="errore=false" :msg="testoMsg"></notifica>
     <pulsanti :loggato="loggato" @login="login"></pulsanti>
     <fogli v-if="mostraPresenze" @clickFoglio="clickFoglio($event)"></fogli>
-    <div class="container">
-      <div class="container" v-if="!mostraPresenze">Carico...</div>
-      <presenze v-if="mostraPresenze" 
-                :foglio="selFoglio" 
-                @erroreScrittura="erroreScrittura"
-                :loggato="loggato"
-      ></presenze>
-    </div>
+    <div class="container" v-if="!mostraPresenze">Carico...</div>
+    <presenze v-if="mostraPresenze" 
+              :foglio="selFoglio" 
+              @erroreScrittura="erroreScrittura"
+              :loggato="loggato"
+    ></presenze>
   </div>
 </template>
 

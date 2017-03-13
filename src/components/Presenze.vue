@@ -1,16 +1,16 @@
 <template>
   <div class="presenze">
-    <table class="table is-striped">
+    <table class="table table-bordered table-hover">
       <thead>
         <tr>
           <th>Attore</th>
-          <th v-for="evento in eventi">{{evento.spettacolo}} - {{evento.giorno}}</th>
+          <th v-for="evento in eventi">{{evento.giorno}}<br />{{evento.spettacolo}}</th>
         </tr>
       </thead>
       <tfoot>
         <tr>
           <th>Attore</th>
-          <th v-for="evento in eventi">{{evento.spettacolo}} - {{evento.giorno}}</th>
+          <th v-for="evento in eventi">{{evento.giorno}}<br />{{evento.spettacolo}}</th>
         </tr>
       </tfoot>
       <tbody>
@@ -22,7 +22,8 @@
                      :checked="dispo.disponibilita"
                      @click="toggleDispo"
                      :id="dispo.cella"
-                     :class="{'is-disabled': !loggato}"
+                     :class="{'disabled': !loggato}"
+                     :disabled="!loggato"
               >
             </p>
           </td>

@@ -1,12 +1,10 @@
 <template>
   <div class="fogli">
-    <div class="tabs is-centered is-boxed">
-      <ul>
-        <li v-for="foglio in fogli" :class="{'is-active': foglio == foglioSel}">
-          <a @click="clickFoglio(foglio)">{{foglio}}</a>
-        </li>
-      </ul>
-    </div>
+    <ul class="nav nav-tabs">
+      <li role="presentation" v-for="foglio in fogli" :class="{'active': foglio == foglioSel}">
+        <a @click="clickFoglio(foglio)">{{foglio}}</a>
+      </li>
+    </ul>
   </div>
 </template>
 

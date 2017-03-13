@@ -1,36 +1,26 @@
 <template>
   <div class="pulsanti">
-    <nav class="nav">
-      <div class="nav-left">
-        <span class="nav-item">
-          <img src="../assets/logo_ABIT_completo_medium.png">
-        </span>
-      </div>
-
-      <!--<div class="nav-center">
-        <div class="nav-item">
-          <a class="button is-primary" @click="$emit('clickPresenze')">
-            <span class="icon">
-              <i class="fa fa-download"></i>
-            </span>
-            <span>Leggi presenze</span>
-          </a> 
-        </div>
-      </div>-->
-
-      <div class="nav-center">
-          <div class="nav-item" :class="{hidden: auth}">
-          <a class="button is-success" @click="handleAuthClick">
-            <span class="icon"><i class="fa fa-edit"></i></span>
-            <span>Modifica</span>
+    <nav class="navbar navbar-inverted">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">
+            <img alt="ABIT" src="../assets/logo_ABIT_1.png" style="width:30px">
           </a>
         </div>
-        <div class="nav-item" :class="{hidden: !auth}">
-          <a class="button is-danger is-outlined" @click="handleSignoutClick">
-            <span class="icon"><i class="fa fa-eye"></i></span>
-            <span>Visualizza</span>
-          </a>
-        </div>
+        <ul class="nav navbar-nav">
+          <li :class="{hidden: auth}">
+            <button type="button" class="btn btn-success navbar-btn" @click="handleAuthClick">
+              <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+              Modifica
+            </button>
+          </li>
+          <li :class="{hidden: !auth}">
+            <button type ="button" class="btn btn-danger navbar-btn" @click="handleSignoutClick">
+              <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+              Visualizza
+            </button>
+          </li>
+        </ul>
       </div>
     </nav>
   </div>
