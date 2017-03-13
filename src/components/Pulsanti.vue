@@ -7,35 +7,29 @@
         </span>
       </div>
 
-      <div class="nav-center">
+      <!--<div class="nav-center">
         <div class="nav-item">
-          <a class="button is-primary is-small" @click="$emit('clickPresenze')">
+          <a class="button is-primary" @click="$emit('clickPresenze')">
             <span class="icon">
               <i class="fa fa-download"></i>
             </span>
             <span>Leggi presenze</span>
           </a> 
         </div>
-      </div>
+      </div>-->
 
-      <!-- This "nav-toggle" hamburger menu is only visible on mobile -->
-      <!-- You need JavaScript to toggle the "is-active" class on "nav-menu" -->
-      <span class="nav-toggle" @click="toggleMenu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </span>
-
-      <div class="nav-right nav-menu" :class="{ 'is-active': navMenu }">
-          <div class="nav-item">
-          <a class="button is-info" @click="handleAuthClick">
-            <span>Autorizza</span>
-          </a> 
+      <div class="nav-center">
+          <div class="nav-item" :class="{hidden: auth}">
+          <a class="button is-success" @click="handleAuthClick">
+            <span class="icon"><i class="fa fa-edit"></i></span>
+            <span>Modifica</span>
+          </a>
         </div>
-        <div class="nav-item">
+        <div class="nav-item" :class="{hidden: !auth}">
           <a class="button is-danger is-outlined" @click="handleSignoutClick">
-            <span>Disconnetti</span>
-          </a> 
+            <span class="icon"><i class="fa fa-eye"></i></span>
+            <span>Visualizza</span>
+          </a>
         </div>
       </div>
     </nav>
@@ -48,21 +42,39 @@ export default {
   name: 'pulsanti',
   data () {
     return {
-      navMenu: ''
+      auth: false
+    }
+  },
+  props: ['loggato'],
+  created: function () {
+    this.auth = this.loggato
+  },
+  watch: {
+    loggato: function (val) {
+      this.auth = val
     }
   },
   methods: {
-    toggleMenu: function () {
-      this.navMenu = !this.navMenu
-    },
     handleAuthClick: function (event) {
       gapi.auth2.getAuthInstance().signIn()
-      this.toggleMenu()
+        .then(function () {
+          this.auth = gapi.auth2.getAuthInstance().isSignedIn.get()
+          this.$emit('login')
+        }, function () { }, this)
     },
     handleSignoutClick: function (event) {
       gapi.auth2.getAuthInstance().signOut()
-      this.toggleMenu()
+        .then(function () {
+          this.auth = gapi.auth2.getAuthInstance().isSignedIn.get()
+          this.$emit('logout')
+        }, function () { }, this)
     }
   }
 }
 </script>
+
+<style scoped>
+  .hidden {
+    display: none;
+  }
+</style>

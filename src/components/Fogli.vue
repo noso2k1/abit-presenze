@@ -2,7 +2,9 @@
   <div class="fogli">
     <div class="tabs is-centered is-boxed">
       <ul>
-        <li v-for="foglio in fogli" :class="{'is-active': foglio == foglioSel}"><a @click="clickFoglio(foglio)">{{foglio}}</a></li>
+        <li v-for="foglio in fogli" :class="{'is-active': foglio == foglioSel}">
+          <a @click="clickFoglio(foglio)">{{foglio}}</a>
+        </li>
       </ul>
     </div>
   </div>
@@ -48,7 +50,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 
 </style>

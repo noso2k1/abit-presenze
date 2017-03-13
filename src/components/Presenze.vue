@@ -18,7 +18,12 @@
           <td>{{presenza.attore.nome}}</td>
           <td v-for="dispo in presenza.dispo">
             <p class="control">
-              <input type="checkbox" :checked="dispo.disponibilita" @click="toggleDispo" :id="dispo.cella">
+              <input type="checkbox" 
+                     :checked="dispo.disponibilita"
+                     @click="toggleDispo"
+                     :id="dispo.cella"
+                     :class="{'is-disabled': !loggato}"
+              >
             </p>
           </td>
         </tr>
@@ -40,7 +45,7 @@ export default {
       SPREADSHEET_ID: '1m2mIR89sXViHTNExSHyfTbgi9VxzCCn__KtLO2uCzKI'     // Foglio di TEST
     }
   },
-  props: ['foglio'],
+  props: ['foglio', 'loggato'],
   methods: {
     trasformaPresenze: function (tab) {
       // ATTORI
@@ -53,6 +58,15 @@ export default {
         attore.index = i       // Indice dell'array
         attori.push(attore)
       }
+
+      for (i = 17; i <= 21; i++) {
+        var musico = []
+        musico.nome = tab[i][0]
+        musico.riga = i + 1    // Numero riga nel file
+        musico.index = i       // Indice dell'array
+        attori.push(musico)
+      }
+
       this.attori = attori
 
       // EVENTI
@@ -104,6 +118,7 @@ export default {
       this.presenze = presenze
     },
 
+    // Aggiorna il valore nella cella corrispondente per evento/attore
     toggleDispo: function (event) {
       var num = 0
       if (event.target.checked) {
@@ -116,7 +131,9 @@ export default {
         range: cella,
         values: [ [ num ] ],
         valueInputOption: 'USER_ENTERED'
-      }).then(response => { })
+      }).then(response => { }, reason => {
+        this.$emit('erroreScrittura')
+      })
     },
 
     nomeColonna: function (n) {
@@ -137,7 +154,16 @@ export default {
     foglio: function (val) {
       gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: this.SPREADSHEET_ID,
-        range: val + '!A1:AF15'
+        range: val + '!A1:AF23'
+      }).then(response => {
+        this.righe = response.result.values
+        this.trasformaPresenze(response.result.values)
+      })
+    },
+    loggato: function () {
+      gapi.client.sheets.spreadsheets.values.get({
+        spreadsheetId: this.SPREADSHEET_ID,
+        range: this.foglio + '!A1:AF23'
       }).then(response => {
         this.righe = response.result.values
         this.trasformaPresenze(response.result.values)
@@ -148,7 +174,7 @@ export default {
   created: function () {
     gapi.client.sheets.spreadsheets.values.get({
       spreadsheetId: this.SPREADSHEET_ID,
-      range: this.foglio + '!A1:AF15'
+      range: this.foglio + '!A1:AF23'
     }).then(response => {
       this.righe = response.result.values
       this.trasformaPresenze(response.result.values)
